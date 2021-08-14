@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3303784680710894593}
   - component: {fileID: 2759686480360435047}
   - component: {fileID: 7448460974297696604}
+  - component: {fileID: -7280101234688955936}
   m_Layer: 0
   m_Name: Libag Fighter
   m_TagString: Enemy
@@ -74,12 +75,37 @@ MonoBehaviour:
   interval: 1
   entryPath: {fileID: 0}
   entryPathIndex: 0
+  pathName: 
+  attackPath: {fileID: 0}
+  atkPathIndex: 0
   speed: 15
   reachDist: 0.01
-  rotSpeed: 6.5
-  pathName: 
+  rotSpeed: 10
   targetPos: {x: 0, y: 0}
+  chanceInterval: 2.5
+  bullet: {fileID: 4645692561532698589, guid: 770ac0119aae356468d4122ee829a6b2, type: 3}
   enemyType: 1
+--- !u!50 &-7280101234688955936
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4911978333334023843}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &5253142214143088576
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,26 @@ public class GameManager : MonoBehaviour
     bool waveFinished;
 
     public Text waveText;
+    public Text reviveText;
+
+    public PlayerManager player;
+    float timer;
+    bool isReviving;
+
+    public Planet planet;
+    public Text gameOverText;
+
+    int sequenceIndex;
+
+    KeyCode[] cheatSequence = new KeyCode[] 
+    {
+        KeyCode.UpArrow,
+        KeyCode.RightArrow,
+        KeyCode.LeftArrow,
+        KeyCode.LeftArrow,
+        KeyCode.DownArrow,
+        KeyCode.LeftArrow,
+    };
 
     private void Awake()
     {
@@ -67,6 +88,98 @@ public class GameManager : MonoBehaviour
                     new float[3] { -0.9f, 3.8f, 1f },
                     new float[3] { -1.5f, 3.8f, 1f }
                 },
+            },
+            new float[][][]
+            {
+                // BATCHES
+                new float[][]
+                {
+                    new float[3] { 0.3f, 2f, 0f },
+                    new float[3] { 0.3f, 2.6f, 0f },
+                    new float[3] { -0.3f, 2f, 0f },
+                    new float[3] { -0.3f, 2.6f, 0f },
+                    new float[3] { 0.3f, 3.2f, 1f },
+                    new float[3] { 0.3f, 3.8f, 1f },
+                    new float[3] { -0.3f, 3.2f, 1f },
+                    new float[3] { -0.3f, 3.8f, 1f }
+                },
+                new float[][]
+                {
+                    new float[3] { 0.9f, 2f, 0f },
+                    new float[3] { 0.9f, 2.6f, 0f },
+                    new float[3] { 1.5f, 2f, 0f },
+                    new float[3] { 1.5f, 2.6f, 0f },
+                    new float[3] { -0.9f, 2f, 0f },
+                    new float[3] { -0.9f, 2.6f, 0f },
+                    new float[3] { -1.5f, 2f, 0f },
+                    new float[3] { -1.5f, 2.6f, 0f }
+                },
+                new float[][]
+                {
+                    new float[3] { 0.9f, 3.2f, 1f },
+                    new float[3] { 1.5f, 3.2f, 1f },
+                    new float[3] { 0.9f, 3.8f, 1f },
+                    new float[3] { 1.5f, 3.8f, 1f },
+                    new float[3] { -0.9f, 3.2f, 1f },
+                    new float[3] { -1.5f, 3.2f, 1f },
+                    new float[3] { -0.9f, 3.8f, 1f },
+                    new float[3] { -1.5f, 3.8f, 1f }
+                },
+                new float[][]
+                {
+                    new float[3] { 2.1f, 3.2f, 1f },
+                    new float[3] { 2.7f, 3.2f, 1f },
+                    new float[3] { 2.1f, 3.8f, 1f },
+                    new float[3] { 2.7f, 3.8f, 1f },
+                    new float[3] { -2.1f, 3.2f, 1f },
+                    new float[3] { -2.7f, 3.2f, 1f },
+                    new float[3] { -2.1f, 3.8f, 1f },
+                    new float[3] { -2.7f, 3.8f, 1f }
+                },
+            },
+            new float[][][]
+            {
+                // BATCHES
+                new float[][]
+                {
+                    new float[3] { 0.3f, 2f, 0f },
+                    new float[3] { 0.3f, 2.6f, 0f },
+                    new float[3] { -0.3f, 2f, 0f },
+                    new float[3] { -0.3f, 2.6f, 0f },
+                    new float[3] { 0.3f, 3.2f, 1f },
+                    new float[3] { 0.3f, 3.8f, 1f },
+                    new float[3] { -0.3f, 3.2f, 1f },
+                    new float[3] { -0.3f, 3.8f, 1f }
+                },
+                new float[][]
+                {
+                    new float[3] { 0.9f, 2f, 0f },
+                    new float[3] { 0.9f, 2.6f, 0f },
+                    new float[3] { 1.5f, 2.6f, 0f },
+                    new float[3] { -0.9f, 2f, 0f },
+                    new float[3] { -0.9f, 2.6f, 0f },
+                    new float[3] { -1.5f, 2.6f, 0f }
+                },
+                new float[][]
+                {
+                    new float[3] { 0.9f, 3.2f, 1f },
+                    new float[3] { 1.5f, 3.2f, 1f },
+                    new float[3] { 0.9f, 3.8f, 1f },
+                    new float[3] { 1.5f, 3.8f, 1f },
+                    new float[3] { -0.9f, 3.2f, 1f },
+                    new float[3] { -1.5f, 3.2f, 1f },
+                    new float[3] { -0.9f, 3.8f, 1f },
+                    new float[3] { -1.5f, 3.8f, 1f }
+                },
+                new float[][]
+                {
+                    new float[3] { 2.1f, 3.2f, 1f },
+                    new float[3] { 2.1f, 3.8f, 1f },
+                    new float[3] { 2.7f, 3.8f, 1f },
+                    new float[3] { -2.1f, 3.2f, 1f },
+                    new float[3] { -2.1f, 3.8f, 1f },
+                    new float[3] { -2.7f, 3.8f, 1f }
+                },
             }
         };
     }
@@ -110,16 +223,79 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (player.isDead && planet.state != PlanetState.Destroyed)
+        {
+            if (!isReviving)
+            {
+                StartCoroutine(Revive());
+            }
+            else
+            {
+                timer -= Time.deltaTime;
+                reviveText.text = Mathf.Ceil(timer).ToString();
+            }
+        }
+
+        if (planet.state == PlanetState.Destroyed)
+        {
+            gameOverText.gameObject.SetActive(true);
+            player.isDead = true;
+        }
+
         if (FindObjectsOfType<Enemy>().Length != 0)
             waveFinished = false;
         else
             waveFinished = true;
+
+        if (Input.anyKeyDown)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+               Debug.Log("Up Arrow");
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+               Debug.Log("Right Arrow");
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
+               Debug.Log("Down Arrow");
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
+               Debug.Log("Left Arrow");
+        }
+
+        if (Input.GetKeyDown(cheatSequence[sequenceIndex]))
+        {
+            sequenceIndex++;
+
+            if(sequenceIndex == cheatSequence.Length)
+            {
+                Debug.Log("cheat");
+                gameOverText.gameObject.SetActive(true);
+                sequenceIndex = 0;
+            }
+        }
+        else
+        {
+            sequenceIndex = 0;
+        }
+    }
+
+    IEnumerator Revive()
+    {
+        isReviving = true;
+        timer = (player.deaths + 1) * 2;
+        reviveText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(timer);
+        player.isDead = false;
+        isReviving = false;
+
+        player.GetComponent<SpriteRenderer>().enabled = true;
+        StartCoroutine(player.Invulnerable(5f));
+
+        reviveText.gameObject.SetActive(false);
     }
 
     IEnumerator Spawn(float delay)
     {
         for (int i = 0; i < enemy.Length; i++)
         {
+
             while (!waveFinished || !waveGenFinished)
                 yield return null;
 
@@ -149,6 +325,10 @@ public class GameManager : MonoBehaviour
 
                     case 2:
                         pathName = "EntryPath3";
+                        break;
+
+                    case 3:
+                        pathName = "EntryPath4";
                         break;
                 }
 
