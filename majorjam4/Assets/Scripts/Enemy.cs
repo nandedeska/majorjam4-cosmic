@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum EnemyType
 {
-    BITER, FIGHTER
+    BITER, FIGHTER, QUEEN
 }
 
 public class Enemy : MonoBehaviour
@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
     public float speed;
     public float reachDist = 0.01f;
     public float rotSpeed;
+    public float idleSpeed;
 
     public Vector2 targetPos;
 
@@ -96,7 +97,7 @@ public class Enemy : MonoBehaviour
 
         if (inPosition && !isAttacking)
         {
-            transform.position = new Vector2(targetPos.x + Mathf.PingPong(Time.time, 2f) - 1f, transform.position.y);
+            transform.position = new Vector2(targetPos.x + idleSpeed * (Mathf.PingPong(Time.time, 2f) - 1f), transform.position.y);
         }
 
         #region BITE ATTACK

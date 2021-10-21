@@ -102,6 +102,7 @@ MonoBehaviour:
   speed: 15
   reachDist: 0.01
   rotSpeed: 10
+  idleSpeed: 1
   targetPos: {x: 0, y: 0}
   chanceInterval: 2.5
   bullet: {fileID: 0}
@@ -153,6 +154,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

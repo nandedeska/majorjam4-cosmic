@@ -22,9 +22,10 @@ public class GameManager : MonoBehaviour
     bool isReviving;
 
     public Planet planet;
-    public Text gameOverText;
+    public GameObject gameOver;
 
     int sequenceIndex;
+    public GameObject cheatsTab;
 
     KeyCode[] cheatSequence = new KeyCode[] 
     {
@@ -238,7 +239,7 @@ public class GameManager : MonoBehaviour
 
         if (planet.state == PlanetState.Destroyed)
         {
-            gameOverText.gameObject.SetActive(true);
+            gameOver.SetActive(true);
             player.isDead = true;
         }
 
@@ -247,7 +248,7 @@ public class GameManager : MonoBehaviour
         else
             waveFinished = true;
 
-        if (Input.anyKeyDown)
+        /*if (Input.anyKeyDown)
         {
             if (Input.GetKeyDown(KeyCode.UpArrow))
                Debug.Log("Up Arrow");
@@ -257,7 +258,7 @@ public class GameManager : MonoBehaviour
                Debug.Log("Down Arrow");
             else if (Input.GetKeyDown(KeyCode.LeftArrow))
                Debug.Log("Left Arrow");
-        }
+        }*/
 
         if (Input.GetKeyDown(cheatSequence[sequenceIndex]))
         {
@@ -265,15 +266,46 @@ public class GameManager : MonoBehaviour
 
             if(sequenceIndex == cheatSequence.Length)
             {
-                Debug.Log("cheat");
-                gameOverText.gameObject.SetActive(true);
+                //Debug.Log("cheat");
                 sequenceIndex = 0;
+                Time.timeScale = 0f;
+                cheatsTab.SetActive(true);
             }
         }
-        else
+        else if (Input.anyKeyDown && !Input.GetKeyDown(cheatSequence[sequenceIndex]))
         {
             sequenceIndex = 0;
         }
+    }
+
+    public void CloseCheats()
+    {
+        Time.timeScale = 1f;
+        cheatsTab.SetActive(false);
+    }
+
+    public void ToggleEarthInv(bool toggle)
+    {
+        if (toggle)
+            planet.isInvulnerable = true;
+        else
+            planet.isInvulnerable = false;
+    }
+
+    public void TogglePlayerInv(bool toggle)
+    {
+        if (toggle)
+            player.isInvulnerable = true;
+        else
+            player.isInvulnerable = true;
+    }
+
+    public void ToggleFireRate(bool toggle)
+    {
+        if (toggle)
+            player.shootDelay /= 2;
+        else
+            player.shootDelay *= 2;
     }
 
     IEnumerator Revive()

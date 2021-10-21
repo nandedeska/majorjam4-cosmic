@@ -18,6 +18,8 @@ public class Planet : MonoBehaviour
     public int maxHp;
     public int hp;
 
+
+    public bool isInvulnerable;
     private void Start()
     {
         hp = maxHp;
@@ -45,9 +47,16 @@ public class Planet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (isInvulnerable) return;
+
         if(other.tag == "Enemy" || other.tag == "Bullet")
         {
             hp -= 5;
+        }
+
+        if(other.tag == "Laser")
+        {
+            hp = 0;
         }
     }
 }
